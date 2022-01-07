@@ -29,6 +29,7 @@ func (b *blockchain) AddBlock(data string) {
 	b.Height = block.Height
 	b.persist()
 }
+
 func (b *blockchain) Blocks() []*Block {
 	var blocks []*Block
 	hashCursor := b.NewestHash
@@ -42,4 +43,18 @@ func (b *blockchain) Blocks() []*Block {
 		}
 	}
 	return blocks
+}
+func Blockchain() *blockchain {
+	if b == nil {
+		once.Do(func() {
+			b = &blockchain{"", 0}
+			checkpoint := db.Checkpoint()
+			if checkpoint == nil {
+				b.AddBlock("Genesis")
+			} else {
+				b.restore(checkpoint)
+			}
+		})
+	}
+	return b
 }
