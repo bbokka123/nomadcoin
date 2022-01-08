@@ -44,6 +44,7 @@ func (b *blockchain) Blocks() []*Block {
 	}
 	return blocks
 }
+
 func Blockchain() *blockchain {
 	if b == nil {
 		once.Do(func() {
